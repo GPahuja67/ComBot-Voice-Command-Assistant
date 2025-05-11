@@ -1,1 +1,3 @@
 # ComBot-Voice-Command-Assistant
+
+ComBot is a Python-based voice assistant with a user-friendly Tkinter GUI that allows users to interact using voice commands. It supports various tasks such as telling the current date and time, opening applications like Mozilla Firefox and system settings, performing calculations, searching on Google using APIs, setting and announcing reminders, scheduling system shutdowns, and even telling jokes. Built primarily for Linux systems, ComBot uses libraries like `speech_recognition`, `pyttsx3`, and `requests` to deliver real-time voice responses and system-level actions, making it a practical and interactive desktop assistant.
