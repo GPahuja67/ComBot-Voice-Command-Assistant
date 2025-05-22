@@ -19,6 +19,8 @@ for voice in voices:
         engine.setProperty('voice', voice.id)
         break
 
+API_KEY = 'AIzaSyAh-_j0hbE6a1DlzNbUH8_TLAG6-eTq7j0'
+CX = '3011e78e9e3b64066'
 
 reminders = []
 
@@ -46,6 +48,26 @@ def listen():
         print("Mic error:", e)
         return ""
 
+# Google Search
+def google_search(query):
+    url = f"https://www.googleapis.com/customsearch/v1?q={query}&key={API_KEY}&cx={CX}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        results = response.json().get('items', [])
+        if results:
+            result = results[0]
+            reply = f"Here's the top result: {result['title']}\n{result['snippet']}\nOpening in browser..."
+            try:
+                subprocess.run(['xdg-open', result['link']], check=True)
+            except Exception as e:
+                reply += f"\nError opening browser: {e}"
+        else:
+            reply = "Sorry, no results found."
+    else:
+        reply = "Search error."
+
+    speak(reply)
+    response_box.insert(tk.END, f"ComBot: {reply}\n")
 
 # Reminder check loop
 def reminder_loop():
@@ -94,6 +116,11 @@ def perform_action(command):
 
     elif 'joke' in command:
         reply = "Why don't programmers like nature? It has too many bugs."
+
+    elif 'search' in command:
+        query = command.replace("search", "").strip()
+        google_search(query)
+        return
 
     elif 'shutdown in' in command:
         match = re.search(r'shutdown in (\d+)', command)
